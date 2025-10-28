@@ -58,20 +58,21 @@ RealSignal generate_real_noisy_signal(double duration, double noise_std_dev) {
     }
     return signal;
 }
-
 // Hardcore Gaussian noise adder
 void addNoise(RealSignal &signal, double stdDev) {
     std::mt19937 rng{std::random_device{}()};
     std::normal_distribution<double> dist(0.0, stdDev);
+    
 
     for(auto &s : signal) s += dist(rng);
 }
 
-   ```
-
 ```
+```
+---
+
      
-   - Adds Gaussian noise to simulate real-world channel conditions.
+  - Adds Gaussian noise to simulate real-world channel conditions.
    - Supports easy adjustments to signal parameters.
 
 2. **Modulation and Demodulation**
