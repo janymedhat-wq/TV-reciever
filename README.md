@@ -8,7 +8,7 @@ This project is intended for educational purposes, helping developers understand
 
 ---
 
-## Super Technical Review
+## Project architecture
 
 This project implements a **complete TV receiver signal pipeline**, simulating: LNB downconversion, QPSK/BPSK demodulation, noise modeling, Reed-Solomon FEC, transport stream decoding, video frame reconstruction, and audio PCM generation. The code leverages **C++17 features**, including templates, `std::vector`, and `<random>` for noise simulation. The design is **modular**, allowing independent testing of LNB, demodulator, FEC, and decoder modules. ASCII-based visualization allows real-time monitoring of signal waveform, bit error rate (BER), and frame reconstruction accuracy. Mathematical formulas and DSP techniques are annotated throughout the code for educational clarity.
 
@@ -44,10 +44,11 @@ RealSignal generate_real_noisy_signal(double duration, double noise_std_dev) {
 
    - Generates a downconverted RF signal with configurable frequency and sampling rate.
 
-   ```Cpp
-     RealSignal generateRF(const RFParams &p) {
+ ```cpp
+RealSignal generateRF(const RFParams &p) {
     const int N = static_cast<int>(p.fs * p.dur);
-    RealSignal signal; signal.reserve(N);
+    RealSignal signal; 
+    signal.reserve(N);
 
     const double dt = 1.0 / p.fs;
     const double omega = 2.0 * PI * p.freq;
@@ -58,18 +59,16 @@ RealSignal generate_real_noisy_signal(double duration, double noise_std_dev) {
     }
     return signal;
 }
+
 // Hardcore Gaussian noise adder
 void addNoise(RealSignal &signal, double stdDev) {
     std::mt19937 rng{std::random_device{}()};
     std::normal_distribution<double> dist(0.0, stdDev);
-    
 
-    for(auto &s : signal) s += dist(rng);
+    for(auto &s : signal) 
+        s += dist(rng);
 }
-
 ```
-```
----
 
      
   - Adds Gaussian noise to simulate real-world channel conditions.
