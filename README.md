@@ -89,6 +89,38 @@ void addNoise(RealSignal &signal, double stdDev) {
 4. **Transport Stream (MPEG-TS) Decoding**
 
    - Parses transport stream packets.
+   
+   ```cpp
+   std::vector<uint8_t> create_ts_packet(uint16_t pid, const std::vector<uint8_t>& payload, bool payload_unit_start = false, uint8_t adaptation_field_control = 1) {
+    std::vector<uint8_t> packet(TS_PACKET_SIZE, 0xFF); // Initialize with padding (0xFF)
+    
+    // Header (4 bytes)
+    packet[0] = TS_SYNC_BYTE;
+    
+    // PID and flags
+    uint16_t pid_raw = pid;
+    if (payload_unit_start) {
+        pid_raw |= 0x4000; // Set PUSI bit
+    }
+    
+    // Big-endian write for PID (bytes 1 and 2)
+    packet[1] = (pid_raw >> 8) & 0xFF;
+    packet[2] = pid_raw & 0xFF;
+    
+    // Adaptation Field Control (byte 3)
+    packet[3] = (adaptation_field_control << 4) | 0x0F; // Continuity counter 0xF for simplicity
+    
+    // Copy payload
+    size_t payload_size = std::min((size_t)TS_PACKET_SIZE - 4, payload.size());
+    std::copy(payload.begin(), payload.begin() + payload_size, packet.begin() + 4);
+    
+    return packet;
+   }
+   ```
+
+
+
+
    - Extracts video and audio streams for further processing.
 
 5. **Video Reconstruction**
@@ -141,9 +173,8 @@ TV_Receiver_Simulator/
 ---
 
 ## Images
-
-![Signal Waveform](images/recevier.png)
 ![Video Frame ASCII](images/front.png)
+
 
 ---
 
