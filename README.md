@@ -44,7 +44,8 @@ RealSignal generate_real_noisy_signal(double duration, double noise_std_dev) {
 1. **LNB Signal Simulation**
 
    - Generates a downconverted RF signal with configurable frequency and sampling rate.
-     ```Cpp
+
+   ```Cpp
      RealSignal generateRF(const RFParams &p) {
     const int N = static_cast<int>(p.fs * p.dur);
     RealSignal signal; signal.reserve(N);
@@ -66,8 +67,11 @@ void addNoise(RealSignal &signal, double stdDev) {
 
     for(auto &s : signal) s += dist(rng);
 }
+
+   ```
+
+```
      
-     ```
    - Adds Gaussian noise to simulate real-world channel conditions.
    - Supports easy adjustments to signal parameters.
 
