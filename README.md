@@ -2,7 +2,7 @@
 
 ## Overview
 
-The **TV Receiver Simulator** is a fully modular C++17 project designed to simulate the workflow of a digital satellite TV receiver entirely in software. It provides a **console-based simulation** of signal sampling, demodulation, error correction, transport stream decoding, and video/audio reconstruction, complete with ASCII-based visualization. No external hardware is required.
+The **TV Receiver ** is a fully modular C++17 project designed to simulate the workflow of a digital satellite TV receiver entirely in software. It provides a **console-based simulation** of signal sampling, demodulation, error correction, transport stream decoding, and video/audio reconstruction, complete with ASCII-based visualization. No external hardware is required.
 
 This project is intended for educational purposes, helping developers understand the signal processing, modulation techniques, and multimedia reconstruction behind digital TV receivers.
 
@@ -44,6 +44,30 @@ RealSignal generate_real_noisy_signal(double duration, double noise_std_dev) {
 1. **LNB Signal Simulation**
 
    - Generates a downconverted RF signal with configurable frequency and sampling rate.
+     ```Cpp
+     RealSignal generateRF(const RFParams &p) {
+    const int N = static_cast<int>(p.fs * p.dur);
+    RealSignal signal; signal.reserve(N);
+
+    const double dt = 1.0 / p.fs;
+    const double omega = 2.0 * PI * p.freq;
+
+    for(int n = 0; n < N; ++n) {
+        double t = n * dt;
+        signal.push_back(std::sin(omega * t));
+    }
+    return signal;
+}
+
+// Hardcore Gaussian noise adder
+void addNoise(RealSignal &signal, double stdDev) {
+    std::mt19937 rng{std::random_device{}()};
+    std::normal_distribution<double> dist(0.0, stdDev);
+
+    for(auto &s : signal) s += dist(rng);
+}
+     
+     ```
    - Adds Gaussian noise to simulate real-world channel conditions.
    - Supports easy adjustments to signal parameters.
 
