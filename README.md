@@ -1,4 +1,4 @@
-# TV Receiver from Ground up1
+# TV Receiver from Ground up
 
 ## Overview
 
