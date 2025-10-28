@@ -36,7 +36,6 @@ RealSignal generate_real_noisy_signal(double duration, double noise_std_dev) {
     return sampled_signal;
 }
 ```
-
 ---
 
 ## Features
