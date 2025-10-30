@@ -3,7 +3,7 @@
 ## Overview
 
 The TV Receiver  is a fully .Tv reciever i build from scratch! It provides a core hardware architecture of signal sampling, demodulation, error correction, transport stream decoding, and video/audio reconstruction, complete with ASCII-based visualization. No external hardware is required.
----Important: The project idea was purely out of curiosity understand hardware and signal sampling, processing in real-time, hands-on experience in systems engineering and digital signal processing and understanding of how a TV receiver works from the ground up, with that being said enjoy the repo!, Enjoy diving into the repository!
+---Important: The project idea was purely out of curiosity understand hardware and signal sampling, processing in real-time, hands-on experience in systems engineering and digital signal processing and understanding of how a TV receiver works from the ground up, with that being said enjoy the repo!.
 
 ---
 
