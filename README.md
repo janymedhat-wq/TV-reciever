@@ -136,15 +136,56 @@ void addNoise(RealSignal &signal, double stdDev) {
 7. **Visualization and Debugging**
 
    - ASCII graph of signal waveform.
-   - Displays signal amplitude, bit error rate, frame number, and other diagnostics.
-   - Provides insight into the internal workings of a digital TV receiver.
+ ``` cpp
+     
+      // find min/max
+    double mn = *min_element(data.begin(), data.end());
+    double mx = *max_element(data.begin(), data.end());
+    if (mn == mx) { // make a small range so plotting works
+        mn -= 1.0;
+        mx += 1.0;
+    }
 
-8. **Modular Architecture**
+    // prepare empty grid (rows x cols)
+    vector<string> grid(height, string(width, ' '));
+
+    // compute sample row positions
+    auto value_to_row = [&](double v)->int {
+        double t = (v - mn) / (mx - mn); // 0..1
+        // row 0 = top. we want greater values near top visually.
+        int r = (int)round((1.0 - t) * (height - 1));
+        r = max(0, min(height - 1, r));
+        return r;
+    };
+
+    // draw points
+    for (int x = 0; x < width; ++x) {
+        int r = value_to_row(data[x]);
+        grid[r][x] = '*';
+    }
+
+    // optionally draw zero (value 0) axis if within range
+    int zero_row = -1;
+    if (draw_zero_axis && mn <= 0.0 && mx >= 0.0) {
+        zero_row = value_to_row(0.0);
+        for (int x = 0; x < width; ++x) {
+            if (grid[zero_row][x] == ' ') grid[zero_row][x] = '-';
+            else if (grid[zero_row][x] == '*') grid[zero_row][x] = '+';
+        }
+}
+  ```
+
+
+
+- Displays signal amplitude, bit error rate, frame number, and other diagnostics.
+- Provides insight into the internal workings of a digital TV receiver.
+
+9. **Modular Architecture**
 
    - Clean separation of components: LNB, Demodulator, FEC, Decoder, Video, Audio.
    - Easily extendable for future features.
 
-9. **Simulation Control**
+10. **Simulation Control**
 
    - Runtime configuration of channel frequency, noise level, and modulation type.
    - Continuous loop simulates real-time TV reception.
