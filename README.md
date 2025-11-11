@@ -195,7 +195,7 @@ void addNoise(RealSignal &signal, double stdDev) {
 ## Project Structure
 
 ```
-TV_Receiver_Simulator/
+TV_Receiver/
 ├── src/
 │   ├── main.cpp          # Entry point
 │   ├── LNB.h/.cpp        # Signal sampling simulation
